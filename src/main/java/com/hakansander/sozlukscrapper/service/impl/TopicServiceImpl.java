@@ -31,8 +31,8 @@ public class TopicServiceImpl implements TopicService {
         }
 
         topicResponse.setSuccess(false);
-        topicResponse.setStatusCode(HttpStatus.NO_CONTENT.value());
-        topicResponse.setResponse(HttpStatus.NO_CONTENT.getReasonPhrase());
+        topicResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+        topicResponse.setResponse(HttpStatus.NOT_FOUND.getReasonPhrase());
         topicResponse.setResponseMsg("Scrapper is failed, no data found");
         return topicResponse;
     }

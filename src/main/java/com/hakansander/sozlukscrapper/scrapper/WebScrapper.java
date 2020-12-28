@@ -15,6 +15,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Component
@@ -26,7 +28,7 @@ public class WebScrapper {
     private static final String URL = "https://eksisozluk.com/basliklar/gundem?p=";
     private static final String URL_END = "&&_=1609016483649";
     private static final String SCRAPPED_CLASS_NAME = "topic-list";
-    private static final int TOTAL_PAGE_INDEX = 1;
+    private static final int TOTAL_PAGE_INDEX = 2;
 
     @PostConstruct
     private void runScrap() {
@@ -77,20 +79,30 @@ public class WebScrapper {
                                 topic.childNodes().get(1).childNodes().size() >= 2 &&
                                 !topic.childNodes().get(1).childNodes().get(1).childNodes().isEmpty() &&
                                 topic instanceof Element)
-                        .map(topic -> new Topic("",
+                        .map(topic -> new Topic(
+                                topic.childNodes().get(1).attributes().get("href"),
                                 topic.childNodes().get(1).childNodes().get(0).toString(),
                                 Integer.parseInt(topic.childNodes().get(1).childNodes().get(1).childNode(0).toString())))
-                        .sorted(Comparator.comparing(Topic::getCommentTotal).reversed())
                         .collect(Collectors.toList());
 
 
                 finalTopicList.addAll(cleanedTopicList);
             }
 
-
+            try {
+                final int MIN = 1;
+                final int MAX = 5;
+                int secondsToSleep = ThreadLocalRandom.current().nextInt(MIN, MAX + 1);
+                TimeUnit.SECONDS.sleep(secondsToSleep);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
         }
 
-        topicList = finalTopicList.isEmpty() ? topicList : new ArrayList<>(finalTopicList);
+        topicList = finalTopicList.isEmpty() ? topicList : new ArrayList<>(finalTopicList.stream()
+                        .sorted(Comparator.comparing(Topic::getCommentTotal).reversed())
+                        .collect(Collectors.toList())
+        );
 
         finalTopicList.clear();
 
