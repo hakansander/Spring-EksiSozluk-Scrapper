@@ -28,7 +28,7 @@ public class WebScrapper {
     private static final String URL = "https://eksisozluk.com/basliklar/gundem?p=";
     private static final String URL_END = "&&_=1609016483649";
     private static final String SCRAPPED_CLASS_NAME = "topic-list";
-    private static final int TOTAL_PAGE_INDEX = 2;
+    private static final int TOTAL_PAGE_INDEX = 5;
 
     @PostConstruct
     private void runScrap() {
@@ -90,8 +90,8 @@ public class WebScrapper {
             }
 
             try {
-                final int MIN = 1;
-                final int MAX = 5;
+                final int MIN = 10;
+                final int MAX = 50;
                 int secondsToSleep = ThreadLocalRandom.current().nextInt(MIN, MAX + 1);
                 TimeUnit.SECONDS.sleep(secondsToSleep);
             } catch (InterruptedException ie) {
