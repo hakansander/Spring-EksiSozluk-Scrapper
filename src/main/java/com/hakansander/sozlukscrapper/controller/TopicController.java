@@ -14,7 +14,7 @@ public class TopicController {
     @Autowired
     TopicService topicService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "https://hs-scrapper.herokuapp.com/")
     @GetMapping(value = "/topics")
     public TopicResponse topicList() {
         return topicService.topicListHandler();
