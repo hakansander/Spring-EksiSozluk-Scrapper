@@ -90,8 +90,8 @@ public class WebScrapper {
             }
 
             try {
-                final int MIN = 10;
-                final int MAX = 50;
+                final int MIN = 1;
+                final int MAX = 5;
                 int secondsToSleep = ThreadLocalRandom.current().nextInt(MIN, MAX + 1);
                 TimeUnit.SECONDS.sleep(secondsToSleep);
             } catch (InterruptedException ie) {
