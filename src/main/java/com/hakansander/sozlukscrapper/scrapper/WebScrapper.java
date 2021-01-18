@@ -1,6 +1,7 @@
 package com.hakansander.sozlukscrapper.scrapper;
 
 import com.hakansander.sozlukscrapper.model.Topic;
+import com.hakansander.sozlukscrapper.util.ScrapperUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -82,9 +83,8 @@ public class WebScrapper {
                         .map(topic -> new Topic(
                                 topic.childNodes().get(1).attributes().get("href"),
                                 topic.childNodes().get(1).childNodes().get(0).toString(),
-                                Integer.parseInt(topic.childNodes().get(1).childNodes().get(1).childNode(0).toString())))
+                                topic.childNodes().get(1).childNodes().get(1).childNode(0).toString()))
                         .collect(Collectors.toList());
-
 
                 finalTopicList.addAll(cleanedTopicList);
             }
@@ -99,6 +99,8 @@ public class WebScrapper {
             }
         }
 
+        topicList = ScrapperUtils.refactorThousand(finalTopicList);
+
         topicList = finalTopicList.isEmpty() ? topicList : new ArrayList<>(finalTopicList.stream()
                         .sorted(Comparator.comparing(Topic::getCommentTotal).reversed())
                         .collect(Collectors.toList())
@@ -108,4 +110,5 @@ public class WebScrapper {
 
         log.info("[scrap] The topics are retrieved :: finalTopicList={}, topicList={}", finalTopicList, topicList);
     }
+
 }

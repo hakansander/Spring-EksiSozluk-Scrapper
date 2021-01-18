@@ -12,5 +12,5 @@ import lombok.Setter;
 public class Topic {
     private String topicUrl;
     private String topicTitle;
-    private int commentTotal;
+    private String commentTotal;
 }
